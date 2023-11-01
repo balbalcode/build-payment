@@ -1,9 +1,672 @@
-<!doctype html>
+<!DOCTYPE html>
 <html>
   <head>
-    <title>Payment Soul Parking</title><meta data-n-head="1" charset="utf-8"><meta data-n-head="1" name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=0"><meta data-n-head="1" data-hid="description" name="description" content="Valet mudah hanya di Payment Soul Parking"><meta data-n-head="1" property="og:title" content="Payment Soul Parking"><meta data-n-head="1" property="og:type" content="website"><meta data-n-head="1" property="og:image" content="https://spn-mgmt.s3.ap-southeast-1.amazonaws.com/assets/mgmt/images/sm-icon.png"><meta data-n-head="1" property="og:url" content="https://devapi.soulparking.co.id"><meta data-n-head="1" property="og:description" content="Platform pembayaran tagihan parkir anda pada lokasi parkir Soul Parking. Anda dapat melakukan pembayaran tagihan anda dengan QRIS atau dompet digital seperti gopay!"><link data-n-head="1" rel="icon" type="image/x-icon" href="https://spn-mgmt.s3.ap-southeast-1.amazonaws.com/assets/mgmt/images/favicon.ico"><link data-n-head="1" rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap"><link data-n-head="1" rel="stylesheet" href="https://cdn.jsdelivr.net/npm/boxicons@2.0.5/css/boxicons.min.css"><link rel="preload" href="/_nuxt/e72fbb5.js" as="script"><link rel="preload" href="/_nuxt/caadf473d0e0984bd78e-v.js" as="script"><link rel="preload" href="/_nuxt/446cd34dc7c73963b52e-v.js" as="script"><link rel="preload" href="/_nuxt/54b20daa9be993eb5e66-v.js" as="script">
+    <link rel="icon" href="icon.png" />
+    <link
+      rel="stylesheet"
+      type=""
+      href="css/style.css"
+    />
+    <link
+      rel="stylesheet"
+      type=""
+      href="css/tailwind.css"
+    />
+    <meta
+      http-equiv="Cache-Control"
+      content="no-cache, no-store, must-revalidate"
+    />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Expires" content="0" />
+    <title>Soul Parking Gate</title>
   </head>
-  <body>
-    <div id="__nuxt"><style>#nuxt-loading{background:#fff;visibility:hidden;opacity:0;position:absolute;left:0;right:0;top:0;bottom:0;display:flex;justify-content:center;align-items:center;flex-direction:column;animation:nuxtLoadingIn 10s ease;-webkit-animation:nuxtLoadingIn 10s ease;animation-fill-mode:forwards;overflow:hidden}@keyframes nuxtLoadingIn{0%{visibility:hidden;opacity:0}20%{visibility:visible;opacity:0}100%{visibility:visible;opacity:1}}@-webkit-keyframes nuxtLoadingIn{0%{visibility:hidden;opacity:0}20%{visibility:visible;opacity:0}100%{visibility:visible;opacity:1}}#nuxt-loading>div,#nuxt-loading>div:after{border-radius:50%;width:5rem;height:5rem}#nuxt-loading>div{font-size:10px;position:relative;text-indent:-9999em;border:.5rem solid #f5f5f5;border-left:.5rem solid #ffc348;-webkit-transform:translateZ(0);-ms-transform:translateZ(0);transform:translateZ(0);-webkit-animation:nuxtLoading 1.1s infinite linear;animation:nuxtLoading 1.1s infinite linear}#nuxt-loading.error>div{border-left:.5rem solid #ff4500;animation-duration:5s}@-webkit-keyframes nuxtLoading{0%{-webkit-transform:rotate(0);transform:rotate(0)}100%{-webkit-transform:rotate(360deg);transform:rotate(360deg)}}@keyframes nuxtLoading{0%{-webkit-transform:rotate(0);transform:rotate(0)}100%{-webkit-transform:rotate(360deg);transform:rotate(360deg)}}</style><script>window.addEventListener("error",function(){var e=document.getElementById("nuxt-loading");e&&(e.className+=" error")})</script><div id="nuxt-loading" aria-live="polite" role="status"><div>Loading...</div></div></div><script>window.__NUXT__={config:{_app:{basePath:"/",assetsPath:"/_nuxt/",cdnURL:null}}}</script>
-  <script src="/_nuxt/e72fbb5.js"></script><script src="/_nuxt/caadf473d0e0984bd78e-v.js"></script><script src="/_nuxt/446cd34dc7c73963b52e-v.js"></script><script src="/_nuxt/54b20daa9be993eb5e66-v.js"></script></body>
+  <body class="h-screen flex flex-col justify-between" style="cursor: none">
+    <header>
+      <div
+        id="top-header"
+        class="bg-primary text-white flex justify-between py-2 px-3 text-2xl"
+      >
+        <div id="timestamp"></div>
+        <div id="gate_number" class="font-black text-dark"></div>
+      </div>
+    </header>
+    <section class="h-screen w-screen">
+      <div
+        id="warning-error__modal"
+        class="fixed left-0 top-0 w-full h-full pt-4 z-10 overflow-auto bg-opacity-10 bg-black flex items-center"
+      >
+        <!-- Modal content -->
+        <div
+          id="warning-error__wrapper"
+          class="w-3/5 bottom-5 right-5 absolute"
+        ></div>
+      </div>
+
+      <div
+        id="section-IDLE__wrapper"
+        class="bg-light py-5 w-screen"
+        style="min-height: 95vh"
+      >
+        <div class="mt-12 px-1 mb-5 grid grid-cols-3">
+          <div class="w-screen">
+            <!-- default ads -->
+            <div id="default-advertising" class="grid grid-cols-3 gap-8">
+              <div
+                class="col-span-2 shadow-lg rounded-lg overflow-hidden bg-primary p-3 pr-0"
+              >
+                <div class="grid grid-cols-3">
+                  <div class="col-span-3 pt-12">
+                    <h1 class="text-5xl font-black">
+                      <span class="text-4xl">Aplikasi</span> <br />
+                      Soul Parking
+                      <span class="text-4xl text-muted">untuk </span>
+                      Mempermudah Transaksi
+                      <span class="text-muted text-4xl"><br />Parkir Anda</span>
+                    </h1>
+                  </div>
+                  <div class="items-end">
+                    <p class="text-3xl pt-64 font-black">Tersedia Pada</p>
+                    <img
+                      src="img/playstore.png"
+                      class="inline"
+                      style="width: 7rem"
+                    />
+                    <img
+                      src="img/appstore.png"
+                      class="inline"
+                      style="width: 6.5rem"
+                    />
+                  </div>
+                  <div
+                    class="col-span-2 mr-12"
+                    style="
+                      background-image: url('img/default-app.png');
+                      background-position: right;
+                      background-size: contain;
+                      background-repeat: no-repeat;
+                    "
+                  ></div>
+                </div>
+              </div>
+              <div
+                class="rounded-lg shadow-lg overflow-hidden bg-primary px-8 pt-16 pb-5 mr-8"
+              >
+                <img
+                  src="img/logo-outline.png"
+                  class="w-1/3 company-image"
+                  alt=""
+                />
+                <p class="text-4xl font-bold mt-5">
+                  <span
+                    class="text-4xl text-muted overflow-ellipsis break-words"
+                    id="location_name_ads_default"
+                  ></span>
+                </p>
+
+                <div
+                  class="bg-dark text-center py-1 font-black mt-32 text-xl rounded w-full text-white"
+                >
+                  <span id="caption-gate-default"
+                    >Tempelkan Kartu/Tiket Anda</span
+                  >
+                </div>
+
+                <div class="mt-8 company-image">
+                  <span class="inline text-md font-bold"> Powered by: </span>
+                  <img
+                    class="inline"
+                    src="img/logo-spn.png"
+                    style="width: 128px"
+                  />
+                </div>
+              </div>
+            </div>
+
+            <!-- photo ads -->
+            <div
+              id="photo-advertising"
+              class="grid gap-8 overflow-hidden grid-cols-3"
+            >
+              <div
+                class="col-span-2 bg-white shadow-lg rounded-lg pl-3 pr-14 py-28"
+              >
+                <img
+                  src="img/vendor.png"
+                  class="vendor-image"
+                  style="height: 128px; width: auto"
+                  alt=""
+                />
+                <p class="text-4xl font-bold mt-5 text-muted">
+                  Selamat datang di <br />
+                  <span
+                    class="text-5xl text-primary"
+                    id="location_name_ads_photo"
+                  ></span>
+                </p>
+
+                <div
+                  class="bg-dark text-center py-1 font-black mt-32 text-2xl rounded w-full text-white"
+                >
+                  <span id="caption-gate-photo"
+                    >Tempelkan Kartu/Tiket Anda</span
+                  >
+                </div>
+
+                <div class="mt-5">
+                  <img
+                    src="img/payment-brizzi.png"
+                    class="inline"
+                    style="width: 64px; height: auto"
+                  />
+                  <img
+                    src="img/payment-emoney.png"
+                    class="inline"
+                    style="width: 64px; height: auto"
+                  />
+                  <img
+                    src="img/payment-flazz.png"
+                    class="inline"
+                    style="width: 64px; height: auto"
+                  />
+                  <img
+                    src="img/payment-qris.png"
+                    class="inline"
+                    style="width: 64px; height: auto"
+                  />
+                </div>
+
+                <div class="mt-8 px-1 company-image">
+                  <span class="inline text-md font-bold"> Powered by: </span>
+                  <img
+                    src="img/logo-spn.png"
+                    class="inline"
+                    style="width: 128px"
+                  />
+                </div>
+              </div>
+              <div
+                class="bg-primary-transparent rounded-lg overflow-hidden middle"
+              >
+                <div class="h-full w-full flex flex-col justify-center">
+                  <img
+                    src="img/advertisement-0.jpg"
+                    alt="advertising-image"
+                    id="photo-advertisement"
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div id="section-BLOCK__wrapper" class="hidden h-full"></div>
+
+      <div id="section-TRX__wrapper" class="bg-light hidden h-full py-5 w-full">
+        <div class="mt-12 px-1 mb-5 grid grid-cols-3">
+          <div
+            class="rounded-tr-lg rounded-br-lg flex flex-col justify-between bg-primary-transparent"
+            id="parking-image-background"
+          >
+            <div></div>
+            <div></div>
+            <div>
+              <img
+                id="parking-image"
+                src=""
+                alt="parking-image"
+                class="img-fluid align-middle rounded-r-lg content-center"
+              />
+            </div>
+            <div>
+              <p
+                class="text-center text-2xl my-8"
+                id="transaction-counter__wrapper"
+              >
+                <span class="font-semibold">Batas Pembayaran (Detik)</span>
+                <br />
+                <span
+                  class="font-black text-5xl"
+                  id="transaction-timer__wrapper"
+                ></span>
+              </p>
+            </div>
+          </div>
+          <div class="col-span-2 px-5">
+            <div class="w-full">
+              <div class="flex text-5xl">
+                <span class="font-black mb-8">Rincian Tarif</span>
+              </div>
+            </div>
+            <div id="parking-detail" class="text-4xl">
+              <div class="w-full rounded px-5 py-2 bg-white grid grid-cols-2">
+                <div class="font-bold text-muted">Kendaraan</div>
+                <div class="text-right font-black" id="vehicle">XXXXXXXX</div>
+              </div>
+
+              <div
+                class="w-full mt-3 rounded px-5 py-2 bg-white grid grid-cols-2"
+              >
+                <div class="font-bold text-muted">Masuk</div>
+                <div class="text-right font-black" id="time-in">
+                  X XXX XXXX : XX : XX : XX
+                </div>
+              </div>
+
+              <div
+                class="w-full mt-3 rounded px-5 py-2 bg-white grid grid-cols-2"
+              >
+                <div class="font-bold text-muted">No. Transaksi</div>
+                <div class="text-right font-black" id="search-key">XXXXX</div>
+              </div>
+
+              <div
+                class="w-full mt-3 rounded px-5 py-2 bg-white grid grid-cols-2"
+              >
+                <div class="font-bold text-muted">Durasi</div>
+                <div class="text-right font-black" id="duration">
+                  X Hari X Jam
+                </div>
+              </div>
+
+              <div
+                class="w-full mt-3 rounded px-5 py-2 bg-white grid grid-cols-2"
+              >
+                <div class="font-bold text-muted">Tarif Parkir</div>
+                <div class="text-right font-black" id="parking-rate">Rp 00</div>
+              </div>
+
+              <div
+                class="w-full mt-3 rounded px-5 py-2 bg-white grid grid-cols-2"
+              >
+                <div class="font-bold text-muted">Tarif Inap</div>
+                <div class="text-right font-black" id="parking-rate-overnight">
+                  Rp 0
+                </div>
+              </div>
+
+              <div class="my-9 mt-9 grid grid-cols-3 gap-3">
+                <div class=""></div>
+                <div class="h-1 w-full grid grid-cols-12 gap-2">
+                  <div class="h-1 rounded-lg bg-gray col-span-5"></div>
+                  <div class="h-1 rounded-lg bg-gray"></div>
+                  <div class="h-1 rounded-lg bg-gray"></div>
+                  <div class="h-1 rounded-lg bg-gray col-span-5"></div>
+                </div>
+                <div class=""></div>
+              </div>
+            </div>
+            <div
+              class="w-full mt-3 rounded p-5 align-middle bg-primary grid grid-cols-2"
+            >
+              <div class="text-4xl font-bold pt-1 text-muted">Total</div>
+              <div class="text-5xl text-right font-black" id="total-rate">
+                Rp X
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="mt-12 px-1 mt-3 grid grid-cols-3">
+          <div
+            class="col-span-3 px-5 py-3 bg-white text-center text-dark rounded-lg"
+          >
+            <p class="font-black text-2xl text-dark">
+              Mohon Tempelkan EMONEY anda untuk memproses pembayaran
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div
+        id="section-OPENGATE__wrapper"
+        class="bg-white hidden h-full text-white py-5 w-full"
+      ></div>
+
+      <div
+        id="section-LOADING__wrapper"
+        class="bg-white hidden h-full text-center pb-5 pt-8 w-full"
+      ></div>
+
+      <div
+        id="section-QRIS__wrapper"
+        class="bg-white hidden h-full text-center pb-5 pt-8 w-full"
+      ></div>
+    </section>
+    <script async src="js/require.js"></script>
+    <script async src="js/main.js"></script>
+    <script async src="js/state-trx.js"></script>
+    <script async src="js/state-block.js"></script>
+    <script async src="js/state-qris.js"></script>
+    <script async src="js/state-loading.js"></script>
+    <script async src="js/state-gate.js"></script>
+
+    <script async>
+      document
+        .getElementById("section-IDLE__wrapper")
+        .classList.remove("hidden");
+      var ws;
+      const condition = ["disconnected", "connected"];
+      setTimeout(() => {
+        let advertisement_stack = 0;
+        setTime();
+        setInterval(setTime, 60000);
+        require(["js/env"], function () {
+          let data = {
+            location_name: location_name,
+            advertising_type: advertising_type,
+            location_type: location_type,
+            gate_caption: gate_caption,
+            gate_name: gate_name,
+          };
+          setupThemeCaption(data);
+          setupAdvertising(data.advertising_type);
+          if (advertising_type === "PHOTO") {
+            setInterval(() => {
+              if (advertisement_stack > 0) advertisement_stack--;
+              else advertisement_stack++;
+              document.getElementById(
+                "photo-advertisement"
+              ).src = `./assets/advertisement/advertisement-${advertisement_stack}.jpg`;
+            }, 3000);
+          }
+          if (data.location_type === "WHITE-LABEL") {
+            let company_image =
+              document.getElementsByClassName("company-image");
+            for (const image of company_image) {
+              image.classList.add("invisible");
+            }
+          }
+        });
+        toggleSection("section-IDLE__wrapper");
+        connect();
+      }, 1000);
+
+      function connect() {
+        ws = new WebSocket("ws://localhost:8003/ws");
+        ws.onopen = function () {
+          toggleSection("section-IDLE__wrapper");
+        };
+        ws.onmessage = onMessageWS;
+        ws.onclose = function (e) {
+          processRenderStateBlock(
+            "img/error-gate.png",
+            "primary",
+            "Koneksi jaringan terganggu, menghubungkan kembali..."
+          );
+          toggleSection("section-BLOCK__wrapper");
+          setTimeout(function () {
+            connect();
+          }, 1000);
+        };
+        ws.onerror = function (err) {
+          processRenderStateBlock(
+            "img/error-gate.png",
+            "primary",
+            "Koneksi jaringan terganggu, menghubungkan kembali..."
+          );
+          toggleSection("section-BLOCK__wrapper");
+          setTimeout(() => {
+            ws.close();
+          }, 1000);
+        };
+      }
+
+      window.onerror = function (message, source, lineno, colno) {
+        const logs = {
+          log_type: "error",
+          message: {
+            message: message,
+            source: source,
+            lineno: lineno,
+            colno: colno,
+          },
+        };
+        ws.send(JSON.stringify(logs));
+        setTimeout(() => {}, 1500);
+      };
+
+      // set timestamp
+      function setTime() {
+        const time = new Date();
+        const date_options = {
+          weekday: "long",
+          year: "numeric",
+          month: "long",
+          day: "numeric",
+          hour: "numeric",
+          minute: "numeric",
+        };
+        document.getElementById("timestamp").innerText = `${time.toLocaleString(
+          "id-ID",
+          date_options
+        )}`;
+      }
+
+      function onMessageWS(event) {
+        let trx = event.data.split(" - ");
+        trx = trx[1];
+
+        if (condition.includes(trx.toString().toLowerCase())) return true;
+        trx = JSON.parse(trx);
+        let state = trx.state;
+        let values = trx.values;
+
+        switch (state) {
+          case "QRIS_CREATED":
+            processRenderStateBlock(
+              values.image,
+              "white",
+              "",
+              "Mohon lakukan pembayaran QRIS diatas",
+              "",
+              "info"
+            );
+            toggleSection("section-BLOCK__wrapper");
+            break;
+          case "MEMBER_WAS_EXPIRED_OUT":
+            processRenderStateQRIS(
+              values,
+              "img/warning-member.png"
+            );
+            toggleSection("section-QRIS__wrapper");
+            break;
+          case "EMONEY_PROCESS":
+            processRenderTransaction(values);
+            toggleSection("section-TRX__wrapper");
+            break;
+          case "QRIS_PROCESS":
+            processRenderStateLoading(
+              "img/logo-outline.png",
+              "img/search.png",
+              "Menyiapkan QRIS",
+              "Anda dapat melakukan pembayaran dengan scan qr yang akan ditampilkan"
+            );
+            toggleSection("section-LOADING__wrapper");
+            break;
+          case "IDLE":
+            toggleSection("section-IDLE__wrapper");
+            break;
+          case "LOADING":
+            processRenderStateLoading(
+              "img/logo-outline.png",
+              "img/search.png",
+              values.title ?? "Mencari Transaksi",
+              values.message ?? ""
+            );
+            toggleSection("section-LOADING__wrapper");
+            break;
+          case "GATE_OPEN":
+            processRenderStateOpenGate(
+              values.images ?? [],
+              values.message ??
+                "Jangan meninggalkan Tiket/Kartu dan barang berharga didalam kendaraan",
+              "Berhasil Masuk",
+              "img/success-gate.png"
+            );
+            toggleSection("section-OPENGATE__wrapper");
+            break;
+          case "QRIS_SUCCESS":
+            processRenderStateBlock(
+              "img/success-qris.png",
+              "primary",
+              "Pembayaran QRIS Berhasil, Selamat Jalan"
+            );
+            toggleSection("section-BLOCK__wrapper");
+            break;
+          case "QRIS_FAILED":
+            processRenderStateBlock(
+              "img/failed-qris.png",
+              "primary",
+              "Pembayaran dengan QRIS tidak tersedia, mohon gunakan metode pembayaran lain"
+            );
+            toggleSection("section-BLOCK__wrapper");
+            break;
+          case "QRIS_GENERATE_FAILED":
+            processRenderStateBlock(
+              "img/failed-qris.png",
+              "primary",
+              "Pembayaran dengan QRIS gagal, silahkan scan tiket kembali."
+            );
+            toggleSection("section-BLOCK__wrapper");
+            break;
+          case "EMONEY_SUCCESS":
+            processRenderStateBlock(
+              "img/success-emoney.png",
+              "success",
+              "Pembayaran Berhasil",
+              `Pembayaran berhasil, Sisa Saldo Rp ${values.left_amount}`
+            );
+            toggleSection("section-BLOCK__wrapper");
+            break;
+          case "EMONEY_FAILED":
+            processRenderStateBlock(
+              "img/failed-emoney.png",
+              "primary",
+              values.message
+            );
+            toggleSection("section-BLOCK__wrapper");
+            break;
+          case "GRACE_PERIOD":
+            processRenderStateBlock(
+              "img/success-gate.png",
+              "success",
+              "Tarif Parkir Gratis",
+              `Biaya parkir anda masih dalam periode Gratis, Selamat Jalan.`
+            );
+            toggleSection("section-BLOCK__wrapper");
+            break;
+          case "LOOP1_NOT_DETECTED":
+            processRenderStateBlock(
+              "img/error-gate.png",
+              "primary",
+              "Kendaraan tidak terdeteksi sistem, sesuaikan posisi kendaraan di dalam kotak"
+            );
+            toggleSection("section-BLOCK__wrapper");
+            break;
+          case "LOOP2_NOT_DETECTED":
+            processRenderStateBlock(
+              "img/error-gate.png",
+              "primary",
+              "Kendaraan tidak terdeteksi sistem, sesuaikan posisi kendaraan di dalam kotak"
+            );
+            toggleSection("section-BLOCK__wrapper");
+            break;
+          case "MEMBER_INVALID":
+            processRenderStateBlock(
+              "img/error-member.png",
+              "primary",
+              `Membership tidak terdaftar, silahkan tap ulang! RF ID ${values.rfid}`
+            );
+            toggleSection("section-BLOCK__wrapper");
+            break;
+          case "MEMBER_SUCCESS_IN":
+            processRenderStateOpenGate(
+              values.images ?? [],
+              `Perhatian! Membership anda tersisa ${values.days_left} Hari`,
+              "Berhasil Masuk",
+              "img/success-gate.png"
+            );
+            toggleSection("section-OPENGATE__wrapper");
+            break;
+          case "MEMBER_SUCCESS_OUT":
+            processRenderStateBlock(
+              "img/success-member.png",
+              "success",
+              `Perhatian! Membership anda tersisa ${values.days_left} Hari`
+            );
+            toggleSection("section-BLOCK__wrapper");
+            break;
+          case "MEMBER_WAS_EXPIRED_IN":
+            processRenderStateBlock(
+              "img/error-member.png",
+              "primary",
+              `Masa berlaku member telah habis, silahkan perpanjang! RF ID ${values.rfid}`
+            );
+            toggleSection("section-BLOCK__wrapper");
+            break;
+          case "MEMBER_WAS_INSIDE":
+            processRenderStateBlock(
+              "img/error-member.png",
+              "primary",
+              `Status member ada di dalam, silahkan tap kartu di pintu keluar! RF ID ${values.rfid}`
+            );
+            toggleSection("section-BLOCK__wrapper");
+            break;
+          case "MEMBER_WAS_OUTSIDE":
+            processRenderStateBlock(
+              "img/error-member.png",
+              "primary",
+              `Status member ada di luar, silahkan tap kartu di pintu masuk! RF ID ${values.rfid}`
+            );
+            toggleSection("section-BLOCK__wrapper");
+            break;
+          case "MEMBER_NOT_FOUND":
+            processRenderStateBlock(
+              "img/error-member.png",
+              "primary",
+              `Membership tidak terdaftar, silahkan tap ulang! RF ID ${values.rfid}`
+            );
+            toggleSection("section-BLOCK__wrapper");
+            break;
+          case "MEMBER_INACTIVE":
+            processRenderStateBlock(
+              "img/error-member.png",
+              "primary",
+              `Membership tidak aktif, silahkan tap ulang! RF ID ${values.rfid}`
+            );
+            toggleSection("section-BLOCK__wrapper");
+            break;
+          case "FAILED_CONNECT_REDIS_HOST":
+            processRenderStateBlock(
+              "img/error-gate.png",
+              "primary",
+              values.message
+            );
+            break;
+          case "GENERAL_ERROR":
+            processRenderStateBlock(
+              "img/error-gate.png",
+              "primary",
+              values.message
+            );
+            toggleSection("section-BLOCK__wrapper");
+            break;
+          case "TIMEOUT":
+            processRenderStateBlock(
+              "img/error-gate.png",
+              "white",
+              "Waktu Pembayaran Habis",
+              "Waktu pembayaran telah habis, mohon scan tiket parkir anda kembali."
+            );
+            toggleSection("section-BLOCK__wrapper");
+            break;
+          case "ERROR_WARNING":
+            toggleModalWarning(values);
+            break;
+          default:
+            break;
+        }
+      }
+    </script>
+  </body>
 </html>
