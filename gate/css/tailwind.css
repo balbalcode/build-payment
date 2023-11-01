@@ -308,6 +308,10 @@ img,video{
   justify-content:space-between
 }
 
+.float-right{
+  float:right
+}
+
 .font-semibold{
   font-weight:600
 }
